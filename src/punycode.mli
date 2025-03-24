@@ -41,7 +41,7 @@ val msg_of_decode_error : punycode_decode_error -> [> `Msg of string]
 *)
 
 
-(** {1:unicode2punycode Unicode -> Punycode}*)
+(** {1:unicode2punycode Unicode -> Punycode} *)
 
 
 val to_encoded_domain_name : string ->

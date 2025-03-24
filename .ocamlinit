@@ -1,7 +1,0 @@
-#require "astring"
-#require "domain-name"
-#require "uutf"
-#require "rresult"
-#mod_use "src/punycode.ml"
-open Rresult;;
-open Punycode;;
