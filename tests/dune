@@ -1,13 +1,5 @@
-(executables
-  (names tests)
-  (public_names -)
-  (libraries punycode qcheck crowbar alcotest)
-)
-(alias
-  (name runtest)
-  (action
-    (progn
-      (run ./tests.exe)
-    )
-  )
-)
+(test
+ (name tests)
+ (package punycode)
+ (libraries punycode qcheck crowbar alcotest)
+ (modules tests))

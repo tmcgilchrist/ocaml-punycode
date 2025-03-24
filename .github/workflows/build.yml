@@ -1,0 +1,53 @@
+name: build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  schedule:
+    # Prime the caches every Monday
+    - cron: 0 1 * * MON
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+        packages:
+          - "punycode.opam"
+        ocaml-compiler:
+          - "ocaml-variants.5.3.0+options,ocaml-option-afl"
+          - "5.3"
+          - "4.14"
+          - "4.08"
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set-up OCaml ${{ matrix.ocaml-compiler }}
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+
+      - name: Install dependencies
+        run: |
+          opam install . --with-test --deps-only
+
+      - name: Build
+        run: |
+          opam exec -- dune build @all
+
+      - name: Tests
+        run: |
+          opam exec -- dune build @runtest
+
+      - name: Opam Lint
+        run: |
+          opam lint .
